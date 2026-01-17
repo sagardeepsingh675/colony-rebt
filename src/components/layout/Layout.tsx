@@ -19,9 +19,11 @@ export function Layout() {
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
                         <Link to="/" className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl gradient-primary text-white flex items-center justify-center font-bold text-lg shadow-lg shadow-indigo-500/30">
-                                CR
-                            </div>
+                            <img
+                                src="/logo.png"
+                                alt="Colony Rent Manager"
+                                className="w-10 h-10 rounded-xl shadow-lg shadow-indigo-500/30"
+                            />
                             <span className="font-bold text-xl text-slate-900 hidden sm:block">
                                 Colony Rent Manager
                             </span>

@@ -104,23 +104,23 @@ export interface Database {
         Tables: {
             colonies: {
                 Row: Colony;
-                Insert: Omit<Colony, 'id' | 'created_at' | 'updated_at'>;
-                Update: Partial<Omit<Colony, 'id' | 'created_at' | 'updated_at'>>;
+                Insert: Record<string, unknown>;
+                Update: Record<string, unknown>;
             };
             rooms: {
                 Row: Room;
-                Insert: Omit<Room, 'id' | 'created_at' | 'updated_at'>;
-                Update: Partial<Omit<Room, 'id' | 'created_at' | 'updated_at'>>;
+                Insert: Record<string, unknown>;
+                Update: Record<string, unknown>;
             };
             rentals: {
                 Row: Rental;
-                Insert: Omit<Rental, 'id' | 'created_at' | 'updated_at'>;
-                Update: Partial<Omit<Rental, 'id' | 'created_at' | 'updated_at'>>;
+                Insert: Record<string, unknown>;
+                Update: Record<string, unknown>;
             };
             rental_history: {
                 Row: RentalHistory;
-                Insert: Omit<RentalHistory, 'id' | 'created_at' | 'updated_at'>;
-                Update: Partial<Omit<RentalHistory, 'id' | 'created_at' | 'updated_at'>>;
+                Insert: Record<string, unknown>;
+                Update: Record<string, unknown>;
             };
         };
     };

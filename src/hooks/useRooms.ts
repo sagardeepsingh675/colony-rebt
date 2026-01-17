@@ -148,11 +148,13 @@ export function useRooms(colonyId: string | undefined) {
 
     const endRental = async (roomId: string, rentalId: string) => {
         // Fetch the rental data directly from the database to ensure we have fresh data
-        const { data: rentalData, error: fetchError } = await supabase
+        const { data: rentalResult, error: fetchError } = await supabase
             .from('rentals')
             .select('*')
             .eq('id', rentalId)
             .single();
+
+        const rentalData = rentalResult as Rental | null;
 
         if (fetchError || !rentalData) {
             console.error('Error fetching rental:', fetchError);
@@ -160,11 +162,13 @@ export function useRooms(colonyId: string | undefined) {
         }
 
         // Fetch room data
-        const { data: roomData, error: roomFetchError } = await supabase
+        const { data: roomResult, error: roomFetchError } = await supabase
             .from('rooms')
             .select('*')
             .eq('id', roomId)
             .single();
+
+        const roomData = roomResult as Room | null;
 
         if (roomFetchError || !roomData) {
             console.error('Error fetching room:', roomFetchError);

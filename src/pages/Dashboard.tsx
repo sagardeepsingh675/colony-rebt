@@ -1,12 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useColonies } from '../hooks/useColonies';
-import { useDashboard } from '../hooks/useDashboard';
 import { PageLoading } from '../components/ui/Loading';
 import { EmptyState, EmptyStateIcons } from '../components/ui/EmptyState';
 import { formatCurrency } from '../lib/utils';
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import type { RoomWithRental } from '../types/database';
+import type { Room, Rental } from '../types/database';
 
 interface OverallStats {
     totalColonies: number;
@@ -41,22 +40,26 @@ export function DashboardPage() {
             const colonyIds = colonies.map(c => c.id);
 
             // Fetch all rooms
-            const { data: rooms } = await supabase
+            const { data: roomsData } = await supabase
                 .from('rooms')
                 .select('*')
                 .in('colony_id', colonyIds);
 
-            if (!rooms) {
+            const rooms = (roomsData || []) as Room[];
+
+            if (rooms.length === 0) {
                 setLoading(false);
                 return;
             }
 
             // Fetch all rentals
             const roomIds = rooms.map(r => r.id);
-            const { data: rentals } = await supabase
+            const { data: rentalsData } = await supabase
                 .from('rentals')
                 .select('*')
                 .in('room_id', roomIds);
+
+            const rentals = (rentalsData || []) as Rental[];
 
             const rentedRooms = rooms.filter(r => r.status === 'Rented').length;
             const freeRooms = rooms.length - rentedRooms;
@@ -64,7 +67,7 @@ export function DashboardPage() {
             let totalExpectedRent = 0;
             let totalReceived = 0;
 
-            rentals?.forEach(rental => {
+            rentals.forEach(rental => {
                 // Simplified expected rent calc (first month + full months since)
                 const startDate = new Date(rental.contract_start_date);
                 const today = new Date();
